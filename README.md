@@ -1,12 +1,12 @@
-# Mars Apartaments Project
+# VR Mars Apartments Project
 In a not so distant future, a lonely austronaut living near the Columbia Hills area 
 is spending his martian days learning various Udacity courses...
 
-![Mars Apartaments](/Screenshots/Image.jpg?raw=true "Mars Apartaments")
+![VR Mars Apartments](/Screenshots/Image.jpg?raw=true "VR Mars Apartments")
 
 Controls: 
-* press in any place to teleport around. 
-* press on Mars globe to give it a spin.
+ * Press in any place to teleport around. 
+ * Press on Mars globe to give it a spin.
 
 ## What is that?
 This is just a sample project made for [Udacity VR](https://www.udacity.com/vr) course.
