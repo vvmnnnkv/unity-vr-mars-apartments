@@ -20,7 +20,13 @@ public class Teleporter : MonoBehaviour {
     private Camera cam;
 
     void Start() {
-        Input.gyro.enabled = true;
+        // Initialize Cardboard/XR startup if needed, though CardboardStartup.cs should handle it.
+        // If we need to ensure the CardboardStartup script is in the scene, we could spawn it here.
+        if (FindObjectOfType<CardboardStartup>() == null)
+        {
+            GameObject startupGO = new GameObject("CardboardStartup");
+            startupGO.AddComponent<CardboardStartup>();
+        }
 
         // Locate the active camera
         Camera[] sceneCams = (Camera[])FindObjectsOfType(typeof(Camera));
@@ -53,11 +59,7 @@ public class Teleporter : MonoBehaviour {
             return;
         }
 
-        // Gyro rotation
-        if (SystemInfo.supportsGyroscope) {
-             // Basic magic window implementation
-             cam.transform.rotation = Quaternion.Euler(90, 0, 90) * Input.gyro.attitude * Quaternion.Euler(180, 180, 0);
-        }
+        // Note: Camera rotation is handled by the XR plugin (TrackedPoseDriver or internally).
 
         // If the viewer pressed the mouse button (touch), then go to the next waypoint
         if (Input.GetMouseButtonDown(0) && !blocked) {
