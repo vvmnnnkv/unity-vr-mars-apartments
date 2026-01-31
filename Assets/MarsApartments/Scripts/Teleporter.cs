@@ -1,7 +1,7 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
-/// The Teleporter class moves the viewer between a predetermined set of waypoints whenever they press the Cardboard button.
+/// The Teleporter class moves the viewer between a predetermined set of waypoints whenever they touch the screen.
 public class Teleporter : MonoBehaviour {
     // How tall is the player, in meters?
     public float height = 1.75f;
@@ -16,18 +16,16 @@ public class Teleporter : MonoBehaviour {
     // Which waypoint is active?
     private int currentWaypointIndex = 0; 
 
-    // Reference to the Google VR object in the scene
-    private GvrViewer viewer;
-
     // Reference to the first active camera in the scene (doesn't have to be tagged as MainCamera)
     private Camera cam;
 
     void Start() {
-        // Locate the GvrViewer instance
-        viewer = (GvrViewer)FindObjectOfType(typeof(GvrViewer));
-        if (viewer == null) {
-            Debug.LogError("No GvrViewer found. Please drag the GvrViewerMain prefab into the scene.");
-            return;
+        // Initialize Cardboard/XR startup if needed, though CardboardStartup.cs should handle it.
+        // If we need to ensure the CardboardStartup script is in the scene, we could spawn it here.
+        if (FindObjectOfType<CardboardStartup>() == null)
+        {
+            GameObject startupGO = new GameObject("CardboardStartup");
+            startupGO.AddComponent<CardboardStartup>();
         }
 
         // Locate the active camera
@@ -56,12 +54,15 @@ public class Teleporter : MonoBehaviour {
     }
 
     void Update() {
-        // Don't do anything unless the Google VR object and camera can be located
-        if (viewer == null || cam == null) {
+        // Don't do anything unless the camera can be located
+        if (cam == null) {
             return;
         }
-        // If the viewer pressed the cardboard button, then go to the next waypoint
-        if (viewer.Triggered && !blocked) {
+
+        // Note: Camera rotation is handled by the XR plugin (TrackedPoseDriver or internally).
+
+        // If the viewer pressed the mouse button (touch), then go to the next waypoint
+        if (Input.GetMouseButtonDown(0) && !blocked) {
             currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length;
         }
         // Smoothly move the viewer towards to the active waypoint
